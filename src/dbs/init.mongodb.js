@@ -9,12 +9,12 @@ class Database {
   // constructor() {
   //   this.connect()
   // }
-  //connect
   connect(type = 'mongodb') {
     mongoose.connect(connectString, {
       maxPoolSize: 50
     })
       .then(res => {
+        console.log(port ?? 0 > 1);
         console.log(`Connected Mongodb Success,`)
         countConnect()
         // checkOverload()
