@@ -1,23 +1,19 @@
-require('dotenv').config()
-const compression = require('compression')
-const express = require('express')
-const { default: helmet } = require('helmet')
-const morgan = require('morgan')
-const mongodb = require('./dbs/init.mongodb')
-const { countConnect } = require('./helpers/check.connect')
-const app = express()
+require("dotenv").config();
+const compression = require("compression");
+const express = require("express");
+const { default: helmet } = require("helmet");
+const morgan = require("morgan");
+const mongodb = require("./dbs/init.mongodb");
+const { countConnect } = require("./helpers/check.connect");
+const app = express();
 // init middlewares
-app.use(morgan('dev'))
-app.use(helmet())
-app.use(compression())
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(compression());
 // connect db
-mongodb.connect()
+mongodb.connect();
 // init routes
-app.get('/', (req, res, next) => {
-  return res.status(200).json({
-    message: 'Welcome'
-  })
-})
+app.use("", require("./routes"));
 // handling error
 
-module.exports = app
+module.exports = app;
