@@ -18,7 +18,7 @@ class Database {
         console.log(port ?? 0 > 1)
         console.log(`Connected Mongodb Success,`)
         countConnect()
-        checkOverload()
+        // checkOverload()
       })
       .catch(err => console.log(`Error Connect!`))
   }

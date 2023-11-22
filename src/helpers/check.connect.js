@@ -8,14 +8,6 @@ const countConnect = () => {
   console.log(`Number of connections::${numConnection}`)
 }
 
-const x = [
-  'sdfsdfsdfsdfasdfsdf dsdsfgsdfg',
-  'sdfsdfsdfsdfasdfsdf dsdsfgsdfg',
-  'sdfsdfsdfsdfasdfsdf dsdsfgsdfg',
-  'sdfsdfsdfsdfasdfsdf dsdsfgsdfg',
-  'sdfsdfsdfsdfasdfsdf dsdsfgsdfg'
-]
-
 const checkOverload = () => {
   setInterval(() => {
     const numConnection = mongoose.connections.length

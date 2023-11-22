@@ -1,7 +1,7 @@
 const shopModel = require('../models/user.model')
 
 class AccessService {
-  static signUp = async ({ name, email, password }) => {
+  static async signUp({ name, email, password }) {
     try {
       const hodelUser = await shopModel.findOne({ email }).lean()
     } catch (error) {
