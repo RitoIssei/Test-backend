@@ -12,7 +12,7 @@ app.use(compression())
 // connect db
 mongodb.connect()
 // init routes
-app.use('/', require('./routes'))
+app.use('', require('./routes'))
 // handling error
 
 module.exports = app
