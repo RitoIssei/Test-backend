@@ -1,9 +1,9 @@
-const mongoose = require('mongoose') // Erase if already required
+const { Schema, model } = require('mongoose') // Erase if already required
 
-const COLLECTION_NAME = 'shops'
-const DOCUMENT_NAME = 'shops'
+const COLLECTION_NAME = 'User'
+const DOCUMENT_NAME = 'Users'
 // Declare the Schema of the Mongo model
-var userSchema = new mongoose.Schema(
+var userSchema = new Schema(
   {
     name: {
       type: String,
@@ -34,12 +34,10 @@ var userSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: {
-      timestamps: true,
-      colection: COLLECTION_NAME
-    }
+    timestamps: true,
+    colection: COLLECTION_NAME
   }
 )
 
 //Export the model
-module.exports = mongoose.model(DOCUMENT_NAME, userSchema)
+module.exports = model(DOCUMENT_NAME, userSchema)

@@ -17,7 +17,6 @@ class AccessService {
         }
       }
       const hastPassword = await hashPassword(password)
-      console.log(hastPassword)
       const newUser = await userModel.create({
         name,
         email,
