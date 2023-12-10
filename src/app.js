@@ -4,14 +4,18 @@ const express = require('express')
 const { default: helmet } = require('helmet')
 const morgan = require('morgan')
 const mongodb = require('./dbs/init.mongodb')
-const bodyParser = require('body-parser')
 
 const app = express()
 // init middlewares
 app.use(morgan('dev'))
 app.use(helmet())
 app.use(compression())
-app.use(bodyParser.json())
+app.use(express.json())
+app.use(
+  express.urlencoded({
+    extends: true
+  })
+)
 // connect db
 mongodb.connect()
 // init routes
