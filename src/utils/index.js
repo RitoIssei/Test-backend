@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-const getInforData = ({ fileds = [], object = {} }) => {
+const getInforData = (fileds = [], object = {}) => {
   return _.pick(object, fileds)
 }
 
