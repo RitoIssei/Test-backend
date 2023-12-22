@@ -13,13 +13,16 @@ const RoleUser = {
   ADMIN: 'ADMIN'
 }
 class AccessService {
+  static async logout(keyStore) {
+    console.log(keyStore, 6969)
+    const delKey = await KeyTokenService.removeKeyById(keyStore._id)
+    return delKey
+  }
+
   static async login({ email, password, refreshToken = null }) {
-    console.log(password)
     const foundUser = await findByEmail({ email })
-    console.log(foundUser)
 
     if (!foundUser) throw new BadRequestError('User not registered')
-    console.log(password, foundUser.password)
     const match = bcrypt.compare(password, foundUser.password)
     if (!match) throw new AuthFailureError('Password not match')
 
@@ -27,8 +30,9 @@ class AccessService {
     const privateKey = crypto.randomBytes(64).toString('hex')
 
     const tokens = await createTokenPair({ userId: foundUser._id, email }, publicKey, privateKey)
-
+    console.log(tokens)
     await KeyTokenService.createKeyToken({
+      userId: foundUser._id,
       refreshToken: tokens.refreshToken,
       privateKey,
       publicKey
