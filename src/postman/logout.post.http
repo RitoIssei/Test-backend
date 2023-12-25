@@ -1,8 +1,8 @@
 
 POST http://localhost:3052/v1/api/user/logout HTTP/1.1
 Content-Type: application/json
-x-client-id: 658404dd7ae6b40654b0e55a
 x-api-key: 167e7fbfaac9e48ae18788e919dbe29116e5c37fe8362c13c40533e114c956ab6347f9505a03762a1ddb95246a34d8813d902fdbe4cf777ef3990b95d26ed482
+x-client-id: 658404dd7ae6b40654b0e55a
 authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTg0MDRkZDdhZTZiNDA2NTRiMGU1NWEiLCJlbWFpbCI6IlR1bmcxMjM0NTY3ODkxMjM0NTY3ODkxMjM0NTY3OEBnbWFpbC5jb20iLCJpYXQiOjE3MDMyMTk1NjYsImV4cCI6MTcwMzM5MjM2Nn0.d8bB0pd9Vjscglr3aG18kAJ4b09X6b8WBWRLsUEhoig
 
 {}

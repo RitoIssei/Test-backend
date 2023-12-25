@@ -13,8 +13,6 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
   const accessToken = await JWT.sign(payload, publicKey, {
     expiresIn: '2 day'
   })
-  console.log(publicKey, 6969123)
-  console.log(accessToken, 123)
 
   const refreshToken = await JWT.sign(payload, privateKey, {
     expiresIn: '7 day'

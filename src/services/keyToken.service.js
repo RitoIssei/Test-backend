@@ -10,14 +10,12 @@ class KeyTokenService {
       //   privateKey
       // })
       // return tokens ? tokens.publicKey : null
-      console.log(userId)
       const filter = { user: userId },
         update = { publicKey, privateKey, refreshTokenUsed: [], refreshToken },
         options = { upsert: true, new: true }
 
       const tokens = await keyTokenModel.findOneAndUpdate(filter, update, options)
 
-      console.log(tokens, 1234)
       return tokens ? tokens.publicKey : null
     } catch (error) {
       return error
@@ -31,6 +29,18 @@ class KeyTokenService {
 
   static async removeKeyById(id) {
     return await keyTokenModel.deleteOne({ _id: new Types.ObjectId(id) }).lean()
+  }
+
+  static async findByRefreshTokenUsed(refreshToken) {
+    return await keyTokenModel.findOne({ refreshTokensUsed: refreshToken }).lean()
+  }
+
+  static async findByRefreshToken(refreshToken) {
+    return await keyTokenModel.findOne({ refreshToken })
+  }
+
+  static async deleteKeyById(userId) {
+    return await keyTokenModel.deleteOne({ user: userId }).lean()
   }
 }
 
