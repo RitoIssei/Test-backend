@@ -13,7 +13,7 @@ app.use(compression())
 app.use(express.json())
 app.use(
   express.urlencoded({
-    extends: true
+    extended: true
   })
 )
 // connect db

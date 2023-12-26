@@ -5,9 +5,9 @@ const HEADER = {
   AUTHORIZATION: 'authorization'
 }
 
-async function apiKey(rep, res, next) {
+async function apiKey(req, res, next) {
   try {
-    const key = rep.headers[HEADER.API_KEY]?.toString()
+    const key = req.headers[HEADER.API_KEY]?.toString()
     if (!key) {
       return res.status(403).json({
         message: 'Forbidden'
@@ -19,7 +19,7 @@ async function apiKey(rep, res, next) {
         message: 'Forbidden'
       })
     }
-    rep.objKey = objKey
+    req.objKey = objKey
     return next()
   } catch (error) {}
 }

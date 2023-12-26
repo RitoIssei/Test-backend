@@ -14,28 +14,20 @@ const RoleUser = {
   ADMIN: 'ADMIN'
 }
 class AccessService {
-  static async handlerRefreshToken(refreshToken) {
-    const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken)
-
-    if (foundToken) {
-      const { userId, email } = JWT.verify(refreshToken, foundToken.privateKey)
+  static async handlerRefreshToken({ keyStore, user, refreshToken }) {
+    console.log(user)
+    const { userId, email } = user
+    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
       await KeyTokenService.deleteKeyById(userId)
       throw new ForbiddenError('Something wrong happen!')
     }
-    const holderToken = await KeyTokenService.findByRefreshToken(refreshToken)
-    if (!holderToken) throw new AuthFailureError('User not registeted')
-    const { userId, email } = JWT.verify(refreshToken, holderToken.privateKey)
 
     const foundShop = await findByEmail({ email })
     if (!foundShop) throw new AuthFailureError('User not registeted')
 
-    const tokens = await createTokenPair(
-      { userId, email },
-      holderToken.publicKey,
-      holderToken.privateKey
-    )
+    const tokens = await createTokenPair({ userId, email }, keyStore.publicKey, keyStore.privateKey)
 
-    await holderToken.updateOne({
+    await keyStore.updateOne({
       $set: {
         refreshToken: tokens.refreshToken
       },
@@ -45,7 +37,7 @@ class AccessService {
     })
 
     return {
-      user: { userId, email },
+      user,
       tokens
     }
   }

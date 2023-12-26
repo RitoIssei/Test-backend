@@ -1,6 +1,6 @@
 function asyncHandler(fn) {
-  return (rep, res, next) => {
-    fn(rep, res, next).catch(next)
+  return (req, res, next) => {
+    fn(req, res, next).catch(next)
   }
 }
 
