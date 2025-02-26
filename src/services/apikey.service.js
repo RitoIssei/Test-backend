@@ -1,5 +1,5 @@
 const apikeyModel = require('../models/apikey.model')
-const crypto = require('crypto')
+const crypto = require('node:crypto')
 
 async function findById(key) {
   // const newKey = await apikeyModel.create({

@@ -1,8 +1,12 @@
 const userModel = require('../models/user.model')
-const crypto = require('crypto')
+const crypto = require('node:crypto')
 const KeyTokenService = require('./keyToken.service')
 const { createTokenPair } = require('../auth/authUtils')
-const { BadRequestError, AuthFailureError, ForbiddenError } = require('../core/error.response')
+const {
+  BadRequestError,
+  AuthFailureError,
+  ForbiddenError
+} = require('../core/error.response')
 const { getInforData } = require('../utils')
 const { findByEmail } = require('./user.service')
 const bcrypt = require('bcrypt')
@@ -15,7 +19,6 @@ const RoleUser = {
 }
 class AccessService {
   static async handlerRefreshToken({ keyStore, user, refreshToken }) {
-    console.log(user)
     const { userId, email } = user
     if (keyStore.refreshTokensUsed.includes(refreshToken)) {
       await KeyTokenService.deleteKeyById(userId)
@@ -25,7 +28,11 @@ class AccessService {
     const foundShop = await findByEmail({ email })
     if (!foundShop) throw new AuthFailureError('User not registeted')
 
-    const tokens = await createTokenPair({ userId, email }, keyStore.publicKey, keyStore.privateKey)
+    const tokens = await createTokenPair(
+      { userId, email },
+      keyStore.publicKey,
+      keyStore.privateKey
+    )
 
     await keyStore.updateOne({
       $set: {
@@ -56,13 +63,19 @@ class AccessService {
 
     const publicKey = crypto.randomBytes(64).toString('hex')
     const privateKey = crypto.randomBytes(64).toString('hex')
+    const { _id: userId } = foundUser
 
-    const tokens = await createTokenPair({ userId: foundUser._id, email }, publicKey, privateKey)
-    await KeyTokenService.createKeyToken({
-      userId: foundUser._id,
-      refreshToken: tokens.refreshToken,
+    const tokens = await createTokenPair(
+      { userId: userId, email },
+      publicKey,
+      privateKey
+    )
+
+    await KeyTokenService.upsertKeyToken({
+      userId: userId,
       privateKey,
-      publicKey
+      publicKey,
+      refreshToken: tokens.refreshToken
     })
     return {
       user: getInforData(['_id', 'name', 'email'], foundUser),
@@ -99,13 +112,23 @@ class AccessService {
       const publicKey = crypto.randomBytes(64).toString('hex')
       const privateKey = crypto.randomBytes(64).toString('hex')
 
-      const keyStore = await KeyTokenService.createKeyToken(newUser._id, publicKey, privateKey)
+      const tokens = await createTokenPair(
+        { userId: newUser._id, email },
+        publicKey,
+        privateKey
+      )
+      console.log('Created Token Success::', tokens)
+
+      const keyStore = await KeyTokenService.upsertKeyToken({
+        userId: userId,
+        privateKey,
+        publicKey,
+        refreshToken: tokens.refreshToken
+      })
 
       if (!keyStore) {
         throw new BadRequestError('Error: PublicKeyString error')
       }
-      const tokens = await createTokenPair({ userId: newUser._id, email }, publicKey, privateKey)
-      console.log('Created Token Success::', tokens)
 
       return {
         user: getInforData(['_id', 'name', 'email'], newUser),

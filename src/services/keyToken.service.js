@@ -2,20 +2,31 @@ const keyTokenModel = require('../models/keyToken.model')
 const { Types } = require('mongoose')
 
 class KeyTokenService {
-  static async createKeyToken({ userId, publicKey, privateKey, refreshToken }) {
+  // static async createKeyToken(userId, publicKey, privateKey) {
+  //   try {
+  //     const tokens = await keyTokenModel.create({
+  //       user: userId,
+  //       publicKey,
+  //       privateKey
+  //     })
+
+  //     return tokens ? tokens.publicKey : null
+  //   } catch (error) {
+  //     return error
+  //   }
+  // }
+
+  static async upsertKeyToken({ userId, publicKey, privateKey, refreshToken }) {
     try {
-      // const tokens = await keyTokenModel.create({
-      //   user: userId,
-      //   publicKey,
-      //   privateKey
-      // })
-      // return tokens ? tokens.publicKey : null
       const filter = { user: userId },
         update = { publicKey, privateKey, refreshTokenUsed: [], refreshToken },
         options = { upsert: true, new: true }
 
-      const tokens = await keyTokenModel.findOneAndUpdate(filter, update, options)
-
+      const tokens = await keyTokenModel.findOneAndUpdate(
+        filter,
+        update,
+        options
+      )
       return tokens ? tokens.publicKey : null
     } catch (error) {
       return error
@@ -32,7 +43,9 @@ class KeyTokenService {
   }
 
   static async findByRefreshTokenUsed(refreshToken) {
-    return await keyTokenModel.findOne({ refreshTokensUsed: refreshToken }).lean()
+    return await keyTokenModel
+      .findOne({ refreshTokensUsed: refreshToken })
+      .lean()
   }
 
   static async findByRefreshToken(refreshToken) {
