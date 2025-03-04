@@ -7,6 +7,7 @@ const mongodb = require('./dbs/init.mongodb')
 
 const app = express()
 // init middlewares
+
 app.use(morgan('dev'))
 app.use(helmet())
 app.use(compression())
